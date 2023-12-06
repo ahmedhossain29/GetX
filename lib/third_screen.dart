@@ -26,6 +26,16 @@ class ThirdScreen extends StatelessWidget {
                   Get.offAll(const HomeScreen());
                 },
                 child: const Text("Go to Home")),
+            ElevatedButton(
+                onPressed: () {
+                  Get.snackbar('Hi', 'I am Snack bar');
+                },
+                child: const Text('Snack bar')),
+            ElevatedButton(
+                onPressed: () {
+                  Get.defaultDialog(title: 'Dialog');
+                },
+                child: const Text('Dialog')),
           ],
         ),
       ),
