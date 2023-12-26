@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'counter_app.dart';
+import 'data_read_write.dart';
 
 void main() {
-  runApp(const CounterApp());
+  runApp(const GetxApp());
 }
