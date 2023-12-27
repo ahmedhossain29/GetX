@@ -12,11 +12,18 @@ class GetxApp extends StatelessWidget {
   }
 }
 
-class NoteController extends GetxController {
-  final notes = <String>[].obs;
+class Notes {
+  final String title;
+  final String details;
 
-  void addNotes(String note) {
-    notes.add(note);
+  Notes({required this.title, required this.details});
+}
+
+class NoteController extends GetxController {
+  final noteList = <Notes>[].obs;
+
+  void addNotes(String title, String details) {
+    noteList.add(Notes(title: title, details: details));
     update();
   }
 }
@@ -27,6 +34,7 @@ class NoteApp extends StatelessWidget {
   final NoteController noteController = Get.put(NoteController());
 
   TextEditingController noteTEController = TextEditingController();
+  TextEditingController detailsTEController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +46,9 @@ class NoteApp extends StatelessWidget {
                 padding: EdgeInsets.all(15.0),
                 child: Column(
                   children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
                     TextFormField(
                       controller: noteTEController,
                       decoration: InputDecoration(
@@ -49,11 +60,24 @@ class NoteApp extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
+                    TextFormField(
+                      controller: detailsTEController,
+                      decoration: InputDecoration(
+                        label: const Text('Write Note'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     ElevatedButton(
                         onPressed: () {
-                          noteController.addNotes(noteTEController.text);
+                          noteController.addNotes(
+                              noteTEController.text, detailsTEController.text);
                           Get.back();
                           noteTEController.clear();
+                          detailsTEController.clear();
                         },
                         child: const Text('Done')),
                   ],
@@ -68,10 +92,11 @@ class NoteApp extends StatelessWidget {
       ),
       body: Obx(
         () => ListView.builder(
-            itemCount: noteController.notes.length,
+            itemCount: noteController.noteList.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(noteController.notes[index]),
+                title: Text(noteController.noteList[index].title),
+                subtitle: Text(noteController.noteList[index].details),
               );
             }),
       ),
